@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Register')}"></head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+<div class="loginwrap">
+  <div class="loginside r-customer"><h2>Join ReturnHub</h2><p>Create your customer account to shop, return products and track every decision.</p></div>
+  <div class="loginform">
+    <h1>Create your account</h1>
+    <div class="alert err" th:if="${error}" th:text="${error}"></div>
+    <form method="post" th:action="@{/register}" class="col">
+      <label>Full name</label><input name="name" required>
+      <label>Email</label><input name="email" type="email" required>
+      <label>Phone</label><input name="phone" required>
+      <label>Password (min 6 characters)</label><input name="password" type="password" minlength="6" required>
+      <label>Confirm password</label><input name="confirm" type="password" minlength="6" required>
+      <button>Register</button>
+    </form>
+    <p class="demo">Already registered? <a href="/login?role=customer">Log in</a></p>
+  </div>
+</div>
+</body></html>

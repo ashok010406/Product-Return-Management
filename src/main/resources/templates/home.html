@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Home')}"></head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+<section class="hero">
+  <h1>Product returns,<br>made simple and transparent.</h1>
+  <p>Shop, request a return, and follow every decision in real time. Damaged item? Describe it and our team reviews it fast.</p>
+  <a class="cta" href="/register">Create Free Account</a>
+  <a class="cta ghost" href="/login?role=customer">Customer Login</a>
+</section>
+<main>
+  <h1>Choose your portal</h1>
+  <p class="sub">Three secure areas, each with its own tools.</p>
+  <div class="grid">
+    <a class="portal p1" href="/login?role=customer"><h2>&#128100; Customer</h2><p>Shop, view orders, request returns, track status, manage profile.</p><b>Customer Login &rarr;</b></a>
+    <a class="portal p2" href="/login?role=staff"><h2>&#128188; Staff</h2><p>Analytics dashboard, review queue, approve or reject, export reports.</p><b>Staff Login &rarr;</b></a>
+    <a class="portal p3" href="/login?role=admin"><h2>&#128737; Admin</h2><p>Everything staff can do plus user accounts and the audit trail.</p><b>Admin Login &rarr;</b></a>
+  </div>
+  <div class="grid" style="margin-top:34px">
+    <div class="stat g1"><h3>30-day window</h3><p>Returns accepted within 30 days of purchase.</p></div>
+    <div class="stat g4"><h3>Damage proof</h3><p>A detailed explanation is required for damaged items.</p></div>
+    <div class="stat g3"><h3>Live tracking</h3><p>Pending, approved or rejected with staff remarks.</p></div>
+  </div>
+</main>
+</body></html>

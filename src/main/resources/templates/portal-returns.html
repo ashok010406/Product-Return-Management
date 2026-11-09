@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('My Returns')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: cside('returns')}"></aside><div class="content"><main>
+<div class="alert ok" th:if="${success}" th:text="${success}"></div>
+<div class="alert err" th:if="${error}" th:text="${error}"></div>
+<h1>My Returns</h1><p class="sub">Follow each request from submission to decision.</p>
+<p class="sub" th:if="${#lists.isEmpty(returns)}">No return requests yet.</p>
+<div class="rcard" th:each="r : ${returns}">
+  <div class="rtop"><b th:text="'#' + ${r.id} + ' ' + ${r.purchase.productName}"></b>
+    <span th:class="'badge ' + ${r.status}" th:text="${r.status}"></span></div>
+  <div class="steps" th:classappend="${r.status}"><i>Submitted</i><i>Under review</i><i>Decision</i></div>
+  <p class="muted" th:text="${r.reason} + ' | ' + ${#temporals.format(r.createdAt,'dd MMM yyyy HH:mm')}"></p>
+  <p th:if="${r.damageDescription}" class="dmg" th:text="'Damage: ' + ${r.damageDescription}"></p>
+  <p th:if="${r.staffRemarks}" th:text="'Staff remarks: ' + ${r.staffRemarks}"></p>
+  <form th:if="${r.status == 'PENDING'}" method="post" th:action="@{/portal/returns/{id}/cancel(id=${r.id})}"><button class="btn-red">Cancel request</button></form>
+</div>
+</main></div></div>
+</body></html>

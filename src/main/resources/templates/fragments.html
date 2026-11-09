@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} + ' | ReturnHub'">ReturnHub</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:fragment="nav" class="nav">
+  <div class="brand">&#128230; Return<span>Hub</span></div>
+  <div class="links">
+    <a href="/">Home</a><a href="/track">Track Return</a>
+    <th:block sec:authorize="isAuthenticated()">
+      <a href="/go" class="pill">My Dashboard</a>
+      <form th:action="@{/logout}" method="post" class="logout"><button>Logout</button></form>
+    </th:block>
+    <th:block sec:authorize="!isAuthenticated()">
+      <a href="/login?role=customer">Login</a><a href="/register" class="pill">Register</a>
+    </th:block>
+  </div>
+</nav>
+
+<aside th:fragment="side(active)" class="side">
+  <div class="brand">&#128230; Return<span>Hub</span></div>
+  <p class="who"><span sec:authorize="hasRole('ADMIN')">ADMIN</span><span sec:authorize="hasRole('STAFF')">STAFF</span> &middot; <b sec:authentication="name">user</b></p>
+  <a href="/dashboard" th:classappend="${active=='dashboard'} ? 'on'">&#128202; Dashboard</a>
+  <a href="/returns" th:classappend="${active=='returns'} ? 'on'">&#128260; Return Requests</a>
+  <a href="/customers" th:classappend="${active=='customers'} ? 'on'">&#128101; Customers</a>
+  <a href="/purchases" th:classappend="${active=='purchases'} ? 'on'">&#128717; Purchases</a>
+  <th:block sec:authorize="hasRole('ADMIN')">
+    <p class="sect">ADMINISTRATION</p>
+    <a href="/admin" th:classappend="${active=='admin'} ? 'on'">&#128737; Admin Home</a>
+    <a href="/admin/users" th:classappend="${active=='users'} ? 'on'">&#128273; User Accounts</a>
+    <a href="/admin/audit" th:classappend="${active=='audit'} ? 'on'">&#128220; Audit Log</a>
+  </th:block>
+  <a href="/api/stats" target="_blank">&#128268; REST API</a>
+  <form th:action="@{/logout}" method="post"><button>Logout</button></form>
+</aside>
+
+<aside th:fragment="cside(active)" class="side cust">
+  <div class="brand">&#128230; Return<span>Hub</span></div>
+  <p class="who">Customer &middot; <b sec:authentication="name">user</b></p>
+  <a href="/portal" th:classappend="${active=='home'} ? 'on'">&#127968; My Dashboard</a>
+  <a href="/portal/shop" th:classappend="${active=='shop'} ? 'on'">&#128722; Shop</a>
+  <a href="/portal/orders" th:classappend="${active=='orders'} ? 'on'">&#128230; My Orders</a>
+  <a href="/portal/returns" th:classappend="${active=='returns'} ? 'on'">&#128260; My Returns</a>
+  <a href="/portal/profile" th:classappend="${active=='profile'} ? 'on'">&#128100; My Profile</a>
+  <a href="/track">&#128269; Track a Return</a>
+  <form th:action="@{/logout}" method="post"><button>Logout</button></form>
+</aside>
+</body></html>

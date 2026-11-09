@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Request Return')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: cside('orders')}"></aside><div class="content"><main>
+<div class="alert ok" th:if="${success}" th:text="${success}"></div>
+<div class="alert err" th:if="${error}" th:text="${error}"></div>
+<h1>Request a Return</h1>
+<div class="card col" style="max-width:620px">
+  <h3 th:text="'Order #' + ${p.id} + ' - ' + ${p.productName}"></h3>
+  <p class="muted" th:text="'Purchased ' + ${p.purchaseDate} + ' | Qty ' + ${p.quantity} + ' | ' + ${daysLeft} + ' days left in return window'"></p>
+  <form method="post" th:action="@{/portal/returns}" class="col">
+    <input type="hidden" name="orderId" th:value="${p.id}">
+    <label>Reason for return</label>
+    <select name="reason" id="reason" onchange="toggleDamage()" required>
+      <option>Wrong Item</option><option>Not as Described</option><option>Changed Mind</option><option>Damaged Product</option>
+    </select>
+    <div id="damageBox" style="display:none">
+      <label>Describe the damage in detail (required, min 20 characters)</label>
+      <textarea id="damage" name="damageDescription" rows="4" minlength="20" placeholder="E.g. Screen cracked on arrival, packaging dented..."></textarea>
+    </div>
+    <button>Submit Request</button>
+  </form>
+</div>
+<script>
+function toggleDamage(){var d=document.getElementById('reason').value==='Damaged Product';
+document.getElementById('damageBox').style.display=d?'block':'none';document.getElementById('damage').required=d;}
+</script>
+</main></div></div>
+</body></html>

@@ -1,0 +1,31 @@
+purchaseRow,reason,damageDescription,status,staffRemarks,daysAgo,hoursAgo
+42,Not as Described,,REJECTED,Item matches the listing,13,17
+32,Damaged Product,Item arrived with a dented body and the power button does not respond,APPROVED,Replacement shipped and refund processed,13,1
+17,Not as Described,,APPROVED,Replacement shipped and refund processed,11,1
+14,Not as Described,,APPROVED,Verified and refund issued,11,2
+8,Not as Described,,REJECTED,Item matches the listing,10,7
+44,Damaged Product,Glass surface is scratched deeply and one corner is chipped,APPROVED,Within policy - approved,10,18
+24,Changed Mind,,REJECTED,Insufficient evidence,10,8
+16,Wrong Item,,APPROVED,Damage confirmed from description,10,17
+41,Damaged Product,Item arrived with a dented body and the power button does not respond,APPROVED,Replacement shipped and refund processed,9,4
+12,Not as Described,,APPROVED,Verified and refund issued,8,5
+25,Damaged Product,Item arrived with a dented body and the power button does not respond,APPROVED,Verified and refund issued,7,1
+35,Damaged Product,Packaging was torn open and the cable insulation is cut near the connector,APPROVED,Verified and refund issued,7,18
+30,Changed Mind,,APPROVED,Replacement shipped and refund processed,6,8
+15,Damaged Product,Packaging was torn open and the cable insulation is cut near the connector,APPROVED,Within policy - approved,5,14
+28,Changed Mind,,APPROVED,Within policy - approved,4,8
+5,Changed Mind,,APPROVED,Replacement shipped and refund processed,4,6
+6,Damaged Product,Packaging was torn open and the cable insulation is cut near the connector,APPROVED,Within policy - approved,3,8
+36,Not as Described,,APPROVED,Damage confirmed from description,2,1
+19,Not as Described,,PENDING,,2,12
+21,Not as Described,,PENDING,,2,17
+33,Changed Mind,,APPROVED,Verified and refund issued,2,0
+23,Not as Described,,PENDING,,2,11
+34,Changed Mind,,PENDING,,1,2
+10,Changed Mind,,PENDING,,1,10
+7,Wrong Item,,PENDING,,1,12
+18,Damaged Product,Left side stopped working after one day and there is a rattling sound,PENDING,,1,8
+38,Changed Mind,,PENDING,,0,15
+40,Changed Mind,,PENDING,,0,2
+47,Not as Described,,PENDING,,0,19
+31,Wrong Item,,PENDING,,0,4

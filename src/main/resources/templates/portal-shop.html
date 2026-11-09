@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Shop')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: cside('shop')}"></aside><div class="content"><main>
+<div class="alert ok" th:if="${success}" th:text="${success}"></div>
+<div class="alert err" th:if="${error}" th:text="${error}"></div>
+<h1>Shop</h1><p class="sub">Buy a product, then manage the order and any return from My Orders.</p>
+<div class="shop">
+  <div class="pcard" th:each="p, i : ${products}">
+    <div class="pimg" th:classappend="'pc' + ${i.index % 4}"><span th:utext="${p.icon}"></span></div>
+    <h3 th:text="${p.name}"></h3><p class="muted" th:text="${p.desc}"></p>
+    <b class="price" th:text="'Rs ' + ${#numbers.formatDecimal(p.price,1,'COMMA',0,'POINT')}"></b>
+    <form method="post" th:action="@{/portal/buy}" class="inline">
+      <input type="hidden" name="product" th:value="${i.index}">
+      <input name="quantity" type="number" min="1" max="10" value="1" style="width:70px;min-width:70px">
+      <button>Buy now</button>
+    </form>
+  </div>
+</div>
+</main></div></div>
+</body></html>

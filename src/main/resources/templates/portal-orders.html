@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('My Orders')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: cside('orders')}"></aside><div class="content"><main>
+<div class="alert ok" th:if="${success}" th:text="${success}"></div>
+<div class="alert err" th:if="${error}" th:text="${error}"></div>
+<h1>My Orders</h1><p class="sub">Returns are accepted within 30 days of purchase.</p>
+<p class="sub" th:if="${#lists.isEmpty(orders)}">No orders yet. <a href="/portal/shop">Visit the shop</a>.</p>
+<table th:unless="${#lists.isEmpty(orders)}">
+  <tr><th>Order ID</th><th>Product</th><th>Qty</th><th>Total</th><th>Date</th><th>Return</th></tr>
+  <tr th:each="o : ${orders}">
+    <td th:text="${o.p.id}"></td><td th:text="${o.p.productName}"></td><td th:text="${o.p.quantity}"></td>
+    <td th:text="'Rs ' + ${#numbers.formatDecimal(o.p.price * o.p.quantity,1,'COMMA',0,'POINT')}"></td>
+    <td th:text="${o.p.purchaseDate}"></td>
+    <td>
+      <a th:if="${o.eligible}" class="btn-solid" th:href="@{/portal/returns/new(orderId=${o.p.id})}">Request return</a>
+      <small th:if="${o.eligible}" th:text="' ' + ${o.daysLeft} + ' days left'"></small>
+      <span th:if="${o.status}" th:class="'badge ' + ${o.status}" th:text="${o.status}"></span>
+      <small class="muted" th:if="${!o.eligible and o.status == null}">Return window closed</small>
+    </td>
+  </tr>
+</table>
+</main></div></div>
+</body></html>

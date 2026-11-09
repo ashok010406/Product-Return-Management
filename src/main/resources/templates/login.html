@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Login')}"></head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+<div class="loginwrap">
+  <div class="loginside" th:classappend="'r-' + ${role}">
+    <h2 th:text="${role == 'admin' ? 'Admin Console' : role == 'staff' ? 'Staff Workspace' : 'Customer Portal'}">Portal</h2>
+    <p th:text="${role == 'admin' ? 'Manage accounts, monitor activity and oversee every return.' : role == 'staff' ? 'Review requests, decide fast and track performance.' : 'Shop, return products and follow every decision.'}"></p>
+  </div>
+  <div class="loginform">
+    <div class="roletabs">
+      <a href="/login?role=customer" th:classappend="${role=='customer'} ? 'on'">Customer</a>
+      <a href="/login?role=staff" th:classappend="${role=='staff'} ? 'on'">Staff</a>
+      <a href="/login?role=admin" th:classappend="${role=='admin'} ? 'on'">Admin</a>
+    </div>
+    <h1 th:text="'Sign in as ' + ${role}">Sign in</h1>
+    <div class="alert ok" th:if="${success}" th:text="${success}"></div>
+    <div class="alert err" th:if="${param.error}">Invalid email or password, or the account is deactivated.</div>
+    <div class="alert err" th:if="${param.mismatch}">This account does not belong to the selected portal. Choose the correct tab.</div>
+    <div class="alert ok" th:if="${param.logout}">You have been logged out.</div>
+    <form method="post" th:action="@{/login}" class="col">
+      <input type="hidden" name="role" th:value="${role}">
+      <label>Email</label><input name="username" type="email" required autofocus>
+      <label>Password</label><input name="password" type="password" required>
+      <button>Sign In</button>
+    </form>
+    <p class="demo" th:if="${role=='customer'}">Demo: <b>aarav@mail.com</b> / <b>customer123</b> &middot; <a href="/register">Create account</a></p>
+    <p class="demo" th:if="${role=='staff'}">Demo: <b>staff@returnhub.com</b> / <b>staff123</b></p>
+    <p class="demo" th:if="${role=='admin'}">Demo: <b>admin@returnhub.com</b> / <b>admin123</b></p>
+  </div>
+</div>
+</body></html>

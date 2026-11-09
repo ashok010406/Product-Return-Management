@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Admin')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: side('admin')}"></aside><div class="content"><main>
+<div class="banner abanner"><div><p class="date">Administrator</p><h1>Admin Console &#128737;</h1><p class="lead">Manage accounts and monitor system activity.</p></div>
+  <div class="quick"><a href="/admin/users">&#128273; User Accounts</a><a href="/admin/audit">&#128220; Audit Log</a><a href="/dashboard">&#128202; Analytics</a></div></div>
+<div class="kpis">
+  <div class="kpi g1"><span>&#128737;</span><h2 th:text="${admins}">0</h2><p>Admins</p></div>
+  <div class="kpi g2"><span>&#128188;</span><h2 th:text="${staff}">0</h2><p>Staff</p></div>
+  <div class="kpi g4"><span>&#128100;</span><h2 th:text="${customerAccounts}">0</h2><p>Customer Accounts</p></div>
+  <div class="kpi g5"><span>&#128683;</span><h2 th:text="${disabled}">0</h2><p>Deactivated</p></div>
+  <div class="kpi g7"><span>&#128717;</span><h2 th:text="${purchaseCount}">0</h2><p>Purchases</p></div>
+  <div class="kpi g3"><span>&#9203;</span><h2 th:text="${pending}">0</h2><p>Pending Returns</p></div>
+</div>
+<div class="panel"><h3>Latest activity <a class="more" href="/admin/audit">Full audit log</a></h3>
+  <table><tr><th>Time</th><th>User</th><th>Action</th></tr>
+    <tr th:each="l : ${logs}"><td th:text="${#temporals.format(l.createdAt,'dd MMM HH:mm')}"></td><td th:text="${l.who}"></td><td th:text="${l.action}"></td></tr></table></div>
+</main></div></div>
+</body></html>

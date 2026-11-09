@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Dashboard')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: side('dashboard')}"></aside><div class="content"><main>
+
+<div class="banner">
+  <div>
+    <p class="date" th:text="${today}">Today</p>
+    <h1>Staff Dashboard &#128188;</h1>
+    <p class="lead">You have <b th:text="${pending}">0</b> return request(s) waiting for a decision.</p>
+  </div>
+  <div class="quick">
+    <a href="/returns?status=PENDING">&#9203; Review Pending</a>
+    <a href="/customers">&#10133; Add Customer</a>
+    <a href="/purchases">&#128717; Add Purchase</a>
+    <a href="/returns/export">&#11015; Export CSV</a>
+  </div>
+</div>
+
+<div class="alert warn" th:if="${damagedPending > 0}" th:text="'&#9888; ' + ${damagedPending} + ' damaged-product claim(s) need a detailed review'"></div>
+
+<div class="kpis">
+  <div class="kpi g1"><span>&#128101;</span><h2 th:text="${customerCount}">0</h2><p>Customers</p></div>
+  <div class="kpi g2"><span>&#128717;</span><h2 th:text="${purchaseCount}">0</h2><p>Purchases</p></div>
+  <div class="kpi g7"><span>&#128181;</span><h2 th:text="'Rs ' + ${#numbers.formatDecimal(sales,1,'COMMA',0,'POINT')}">0</h2><p>Total Sales</p></div>
+  <div class="kpi g6"><span>&#128260;</span><h2 th:text="${total}">0</h2><p>Total Returns</p></div>
+  <div class="kpi g3"><span>&#9203;</span><h2 th:text="${pending}">0</h2><p>Pending</p></div>
+  <div class="kpi g4"><span>&#9989;</span><h2 th:text="${approved}">0</h2><p>Approved</p></div>
+  <div class="kpi g5"><span>&#10060;</span><h2 th:text="${rejected}">0</h2><p>Rejected</p></div>
+  <div class="kpi g8"><span>&#128202;</span><h2 th:text="${rate} + '%'">0%</h2><p>Approval Rate</p></div>
+  <div class="kpi g9"><span>&#128256;</span><h2 th:text="${returnRate} + '%'">0%</h2><p>Return Rate</p></div>
+  <div class="kpi g10"><span>&#128176;</span><h2 th:text="'Rs ' + ${#numbers.formatDecimal(refund,1,'COMMA',0,'POINT')}">0</h2><p>Refund Value</p></div>
+  <div class="kpi g11"><span>&#128295;</span><h2 th:text="${damaged}">0</h2><p>Damage Claims</p></div>
+</div>
+
+<div class="two">
+  <div class="panel">
+    <h3>Return status</h3>
+    <div class="donutwrap">
+      <div class="donut" th:style="'background:' + ${donut}"><span th:text="${total}">0</span></div>
+      <ul class="legend">
+        <li><i style="background:#f59e0b"></i>Pending <b th:text="${pending}"></b></li>
+        <li><i style="background:#10b981"></i>Approved <b th:text="${approved}"></b></li>
+        <li><i style="background:#f43f5e"></i>Rejected <b th:text="${rejected}"></b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Returns in the last 7 days</h3>
+    <div class="cols">
+      <div class="col" th:each="t : ${trend}">
+        <b th:text="${t.count}"></b>
+        <div class="colbar" th:style="'height:' + ${t.pct} + '%'"></div>
+        <small th:text="${t.label}"></small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="three">
+  <div class="panel"><h3>Reasons</h3>
+    <div class="bar" th:each="s : ${reasons}"><span th:text="${s.label}"></span>
+      <div class="track"><div class="fill" th:style="'width:' + ${s.pct} + '%'"></div></div><b th:text="${s.count}"></b></div>
+  </div>
+  <div class="panel"><h3>Most returned products</h3>
+    <div class="bar" th:each="s : ${topProducts}"><span th:text="${s.label}"></span>
+      <div class="track"><div class="fill f2" th:style="'width:' + ${s.pct} + '%'"></div></div><b th:text="${s.count}"></b></div>
+  </div>
+  <div class="panel"><h3>Customers with most returns</h3>
+    <div class="bar" th:each="s : ${topCustomers}"><span th:text="${s.label}"></span>
+      <div class="track"><div class="fill f3" th:style="'width:' + ${s.pct} + '%'"></div></div><b th:text="${s.count}"></b></div>
+  </div>
+</div>
+
+<div class="panel">
+  <h3>Needs your decision <a class="more" href="/returns?status=PENDING">Open full queue</a></h3>
+  <p class="sub" th:if="${#lists.isEmpty(queue)}">All caught up! No pending requests.</p>
+  <div class="qitem" th:each="r : ${queue}">
+    <div class="qinfo">
+      <b th:text="'#' + ${r.id} + ' ' + ${r.purchase.productName}"></b>
+      <small th:text="${r.purchase.customer.name} + ' | ' + ${r.reason} + ' | ' + ${#temporals.format(r.createdAt,'dd MMM HH:mm')}"></small>
+      <small class="dmg" th:if="${r.damageDescription}" th:text="${r.damageDescription}"></small>
+    </div>
+    <form method="post" th:action="@{/returns/{id}/decision(id=${r.id})}" class="inline">
+      <input type="hidden" name="from" value="dashboard">
+      <input name="remarks" placeholder="Remarks">
+      <button name="action" value="approve" class="btn-green">Approve</button>
+      <button name="action" value="reject" class="btn-red">Reject</button>
+    </form>
+  </div>
+</div>
+
+<div class="panel">
+  <h3>Recent activity <a class="more" href="/returns">View all</a></h3>
+  <table>
+    <tr><th>ID</th><th>Customer</th><th>Product</th><th>Reason</th><th>Status</th><th>Submitted</th></tr>
+    <tr th:each="r : ${recent}">
+      <td th:text="${r.id}"></td><td th:text="${r.purchase.customer.name}"></td><td th:text="${r.purchase.productName}"></td>
+      <td th:text="${r.reason}"></td><td><span th:class="'badge ' + ${r.status}" th:text="${r.status}"></span></td>
+      <td th:text="${#temporals.format(r.createdAt,'dd MMM yyyy')}"></td>
+    </tr>
+  </table>
+</div>
+
+</main></div></div>
+</body></html>

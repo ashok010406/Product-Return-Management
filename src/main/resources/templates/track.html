@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Track Return')}"></head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+<main>
+  <h1>Track Your Return</h1>
+  <p class="sub">Enter the Return ID and the email used for the purchase.</p>
+  <div class="alert err" th:if="${error}" th:text="${error}"></div>
+  <form class="card" method="get" action="/track">
+    <input name="id" type="number" placeholder="Return ID" required>
+    <input name="email" type="email" placeholder="Your email" required>
+    <button>Check Status</button>
+  </form>
+  <div class="card col" th:if="${result}">
+    <h2 th:text="'Return #' + ${result.id} + ' - ' + ${result.purchase.productName}"></h2>
+    <p>Reason: <b th:text="${result.reason}"></b></p>
+    <p>Status: <span th:class="'badge ' + ${result.status}" th:text="${result.status}"></span></p>
+    <p th:if="${result.staffRemarks}">Staff remarks: <i th:text="${result.staffRemarks}"></i></p>
+  </div>
+</main>
+</body></html>

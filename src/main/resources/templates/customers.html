@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Customers')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: side('customers')}"></aside><div class="content"><main>
+<h1>Customers</h1>
+<div class="alert err" th:if="${error}" th:text="${error}"></div>
+<form class="card" method="post" th:action="@{/customers}">
+  <input name="name" placeholder="Full name" required>
+  <input name="email" type="email" placeholder="Email" required>
+  <input name="phone" placeholder="Phone" required>
+  <button>Add Customer</button>
+</form>
+<form method="get" action="/customers" class="inline" style="margin-bottom:14px">
+  <input name="q" th:value="${q}" placeholder="Search name or email"><button>Search</button>
+</form>
+<table>
+  <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th></tr>
+  <tr th:each="c : ${customers}">
+    <td th:text="${c.id}"></td><td th:text="${c.name}"></td><td th:text="${c.email}"></td><td th:text="${c.phone}"></td>
+    <td class="inline"><a class="btn-link" th:href="@{/customers/{id}/edit(id=${c.id})}">Edit</a>
+      <form method="post" th:action="@{/customers/{id}/delete(id=${c.id})}"><button class="btn-red">Delete</button></form></td>
+  </tr>
+</table>
+</main></div></div>
+</body></html>

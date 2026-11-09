@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Edit Customer')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: side('customers')}"></aside><div class="content"><main>
+<h1>Edit Customer</h1>
+<form class="card col" method="post" th:action="@{/customers/{id}(id=${c.id})}">
+  <label>Name</label><input name="name" th:value="${c.name}" required>
+  <label>Email</label><input name="email" type="email" th:value="${c.email}" required>
+  <label>Phone</label><input name="phone" th:value="${c.phone}" required>
+  <button>Save Changes</button>
+</form>
+</main></div></div>
+</body></html>

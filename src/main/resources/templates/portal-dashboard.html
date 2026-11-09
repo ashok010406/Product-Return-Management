@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('My Dashboard')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: cside('home')}"></aside><div class="content"><main>
+<div class="alert ok" th:if="${success}" th:text="${success}"></div>
+<div class="alert err" th:if="${error}" th:text="${error}"></div>
+<div class="banner cbanner">
+  <div><p class="date">Customer portal</p><h1 th:text="'Hello, ' + ${name} + ' &#128075;'">Hello</h1>
+    <p class="lead">Track your orders and returns in one place.</p></div>
+  <div class="quick"><a href="/portal/shop">&#128722; Shop</a><a href="/portal/orders">&#128230; My Orders</a><a href="/portal/returns">&#128260; My Returns</a><a href="/portal/profile">&#128100; Profile</a></div>
+</div>
+<div class="kpis">
+  <div class="kpi g2"><span>&#128230;</span><h2 th:text="${orders}">0</h2><p>My Orders</p></div>
+  <div class="kpi g6"><span>&#128260;</span><h2 th:text="${total}">0</h2><p>Return Requests</p></div>
+  <div class="kpi g3"><span>&#9203;</span><h2 th:text="${pending}">0</h2><p>Pending</p></div>
+  <div class="kpi g4"><span>&#9989;</span><h2 th:text="${approved}">0</h2><p>Approved</p></div>
+  <div class="kpi g5"><span>&#10060;</span><h2 th:text="${rejected}">0</h2><p>Rejected</p></div>
+  <div class="kpi g10"><span>&#128176;</span><h2 th:text="'Rs ' + ${#numbers.formatDecimal(refund,1,'COMMA',0,'POINT')}">0</h2><p>Refunds Approved</p></div>
+</div>
+<div class="panel"><h3>Latest return requests <a class="more" href="/portal/returns">View all</a></h3>
+  <p class="sub" th:if="${#lists.isEmpty(recent)}">No returns yet. Visit <a href="/portal/orders">My Orders</a> to start one.</p>
+  <table th:unless="${#lists.isEmpty(recent)}"><tr><th>ID</th><th>Product</th><th>Reason</th><th>Status</th><th>Staff remarks</th></tr>
+    <tr th:each="r : ${recent}"><td th:text="${r.id}"></td><td th:text="${r.purchase.productName}"></td><td th:text="${r.reason}"></td>
+      <td><span th:class="'badge ' + ${r.status}" th:text="${r.status}"></span></td><td th:text="${r.staffRemarks ?: '-'}"></td></tr></table>
+</div>
+</main></div></div>
+</body></html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('User Accounts')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: side('users')}"></aside><div class="content"><main>
+<div class="alert ok" th:if="${success}" th:text="${success}"></div>
+<div class="alert err" th:if="${error}" th:text="${error}"></div>
+<h1>User Accounts</h1>
+<form class="card" method="post" th:action="@{/admin/users}">
+  <input name="name" placeholder="Full name" required><input name="email" type="email" placeholder="Email" required>
+  <input name="phone" placeholder="Phone" required><input name="password" type="password" minlength="6" placeholder="Password" required>
+  <select name="role"><option value="STAFF">STAFF</option><option value="ADMIN">ADMIN</option></select>
+  <button>Create account</button>
+</form>
+<table>
+  <tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr>
+  <tr th:each="u : ${users}">
+    <td th:text="${u.id}"></td><td th:text="${u.name}"></td><td th:text="${u.email}"></td>
+    <td><span th:class="'badge ' + ${u.role}" th:text="${u.role}"></span></td>
+    <td><span th:class="'badge ' + (${u.active} ? 'APPROVED' : 'REJECTED')" th:text="${u.active} ? 'ACTIVE' : 'DISABLED'"></span></td>
+    <td th:text="${#temporals.format(u.createdAt,'dd MMM yyyy')}"></td>
+    <td class="inline">
+      <form method="post" th:action="@{/admin/users/{id}/toggle(id=${u.id})}"><button th:class="${u.active} ? 'btn-red' : 'btn-green'" th:text="${u.active} ? 'Deactivate' : 'Activate'"></button></form>
+      <form method="post" th:action="@{/admin/users/{id}/reset(id=${u.id})}" class="inline"><input name="password" type="password" minlength="6" placeholder="New password" required><button>Reset</button></form>
+    </td>
+  </tr>
+</table>
+</main></div></div>
+</body></html>

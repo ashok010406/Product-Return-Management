@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('My Profile')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: cside('profile')}"></aside><div class="content"><main>
+<div class="alert ok" th:if="${success}" th:text="${success}"></div>
+<div class="alert err" th:if="${error}" th:text="${error}"></div>
+<h1>My Profile</h1>
+<div class="two">
+  <form class="card col" method="post" th:action="@{/portal/profile}">
+    <h3>Personal details</h3>
+    <label>Email (cannot be changed)</label><input th:value="${u.email}" disabled>
+    <label>Name</label><input name="name" th:value="${u.name}" required>
+    <label>Phone</label><input name="phone" th:value="${u.phone}" required>
+    <button>Save changes</button>
+  </form>
+  <form class="card col" method="post" th:action="@{/portal/profile/password}">
+    <h3>Change password</h3>
+    <label>Current password</label><input name="current" type="password" required>
+    <label>New password (min 6)</label><input name="password" type="password" minlength="6" required>
+    <button>Update password</button>
+  </form>
+</div>
+</main></div></div>
+</body></html>

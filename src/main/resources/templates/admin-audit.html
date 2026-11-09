@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Audit Log')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: side('audit')}"></aside><div class="content"><main>
+<h1>Audit Log</h1><p class="sub">Every important action: who did what and when (latest 150).</p>
+<table><tr><th>ID</th><th>Time</th><th>User</th><th>Action</th></tr>
+  <tr th:each="l : ${logs}"><td th:text="${l.id}"></td><td th:text="${#temporals.format(l.createdAt,'dd MMM yyyy HH:mm:ss')}"></td><td th:text="${l.who}"></td><td th:text="${l.action}"></td></tr></table>
+</main></div></div>
+</body></html>

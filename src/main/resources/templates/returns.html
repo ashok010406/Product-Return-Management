@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Return Requests')}"></head>
+<body>
+<div class="app"><aside th:replace="~{fragments :: side('returns')}"></aside><div class="content"><main>
+<h1>Return Requests</h1>
+<p class="sub">Review, filter, approve or reject, and export.</p>
+<div class="toolbar">
+  <div class="tabs">
+    <a href="/returns" th:classappend="${status==''} ? 'on'">All</a>
+    <a href="/returns?status=PENDING" th:classappend="${status=='PENDING'} ? 'on'">Pending</a>
+    <a href="/returns?status=APPROVED" th:classappend="${status=='APPROVED'} ? 'on'">Approved</a>
+    <a href="/returns?status=REJECTED" th:classappend="${status=='REJECTED'} ? 'on'">Rejected</a>
+  </div>
+  <form method="get" action="/returns" class="inline">
+    <input type="hidden" name="status" th:value="${status}">
+    <input name="q" th:value="${q}" placeholder="Search customer or product">
+    <button>Search</button>
+    <a class="btn-link" th:href="@{/returns/export(status=${status},q=${q})}">&#11015; Export CSV</a>
+  </form>
+</div>
+<table>
+  <tr><th>ID</th><th>Customer</th><th>Product</th><th>Amount</th><th>Reason</th><th>Damage details</th><th>Status</th><th>Decision</th></tr>
+  <tr th:each="r : ${returns}">
+    <td th:text="${r.id}"></td>
+    <td th:text="${r.purchase.customer.name}"></td>
+    <td th:text="${r.purchase.productName}"></td>
+    <td th:text="'Rs ' + ${#numbers.formatDecimal(r.purchase.price * r.purchase.quantity,1,'COMMA',0,'POINT')}"></td>
+    <td th:text="${r.reason}"></td>
+    <td class="wrap" th:text="${r.damageDescription ?: '-'}"></td>
+    <td><span th:class="'badge ' + ${r.status}" th:text="${r.status}"></span></td>
+    <td>
+      <form th:if="${r.status == 'PENDING'}" method="post" th:action="@{/returns/{id}/decision(id=${r.id})}" class="inline">
+        <input name="remarks" placeholder="Remarks">
+        <button name="action" value="approve" class="btn-green">Approve</button>
+        <button name="action" value="reject" class="btn-red">Reject</button>
+      </form>
+      <span th:unless="${r.status == 'PENDING'}" th:text="${r.staffRemarks ?: ''}"></span>
+    </td>
+  </tr>
+</table>
+<p class="sub" th:if="${#lists.isEmpty(returns)}">No return requests match.</p>
+</main></div></div>
+</body></html>
